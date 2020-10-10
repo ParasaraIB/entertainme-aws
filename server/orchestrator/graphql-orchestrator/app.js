@@ -8,6 +8,6 @@ const server = new ApolloServer({
   resolvers
 });
 
-sever.listen().then(({ url }) => {
+server.listen().then(({ url }) => {
   console.log(`Graphql server is listening at ${url}`);
 });

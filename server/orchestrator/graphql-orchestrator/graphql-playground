@@ -1,0 +1,125 @@
+# MOVIES
+query findAllMovies {
+	findAllMovies {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+query findMovieById {
+  findMovieById(_id: "5f7f2512fbbb047deb40b926") {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+mutation addMovie {
+  addMovie(movie: {
+    title: "Tennet"
+    overview: "Armed with only one word, Tenet, and fighting for the survival of the entire world, a Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time."
+    poster_path: "https://m.media-amazon.com/images/M/MV5BYzg0NGM2NjAtNmIxOC00MDJmLTg5ZmYtYzM0MTE4NWE2NzlhXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_SY1000_CR0,0,666,1000_AL_.jpg"
+    popularity: 7.8
+    tags: ["Action", "Sci-Fi"]
+  }) {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+mutation editMovie {
+  editMovie(_id: "5f81b9a080aade39e0af92c7", movie: {
+    title: "The Devil All the Time"
+    overview: "Sinister characters converge around a young man devoted to protecting those he loves in a postwar backwoods town teeming with corruption and brutality."
+    poster_path: "https://m.media-amazon.com/images/M/MV5BZmE1NmVmN2EtMjZmZC00YzAyLWE4MWEtYjY5YmExMjUxODU1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SY1000_CR0,0,675,1000_AL_.jpg"
+    popularity: 7.1
+    tags: ["Crime", "Drama", "Thriller"]
+  }) {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+mutation deleteMovie {
+  deleteMovie(_id: "5f7f2519fbbb047deb40b927") {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+# TV SERIES
+query findAllTvSeries {
+  findAllTvSeries {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+query findTvSeriesById {
+  findTvSeriesById(_id: "5f802cae77fb6d93e3607822") {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+mutation addTvSeries {
+  addTvSeries(tvSeries: {
+    title: "Planet Earth II"
+    overview: "David Attenborough returns in this breathtaking documentary showcasing life on Planet Earth."
+    poster_path: "https://m.media-amazon.com/images/M/MV5BZWYxODViMGYtMGE2ZC00ZGQ3LThhMWUtYTVkNGE3OWU4NWRkL2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMjYwNDA2MDE@._V1_SY1000_CR0,0,666,1000_AL_.jpg"
+    popularity: 9.5
+    tags: [""]
+  }) {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+mutation editTvSeries {
+  editTvSeries(_id: "5f81c0f70959453ae5eb58ce", tvSeries: {
+    title: "Chernobyl"
+    overview: "In April 1986, an explosion at the Chernobyl nuclear power plant in the Union of Soviet Socialist Republics becomes one of the world's worst man-made catastrophes."
+    poster_path: "https://m.media-amazon.com/images/M/MV5BZGQ2YmMxZmEtYjI5OS00NzlkLTlkNTEtYWMyMzkyMzc2MDU5XkEyXkFqcGdeQXVyMzQ2MDI5NjU@._V1_SY1000_CR0,0,666,1000_AL_.jpg"
+    popularity: 9.4
+    tags: ["Drama", "History", "Thriller"]
+  }) {
+    _id
+    title
+    overview
+    poster_path
+    popularity
+    tags
+  }
+}
+mutation deleteTvSeries {
+  deleteTvSeries(_id: "5f81c0c80959453ae5eb58cd") {
+    _id
+    title
+    overview
+    poster_path
+    tags
+  }
+}

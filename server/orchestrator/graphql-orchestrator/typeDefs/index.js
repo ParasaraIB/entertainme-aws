@@ -9,7 +9,7 @@ const typeDefs = gql `
     popularity: Float
     tags: [String]
   }
-  type Tv {
+  type TvSeries {
     _id: ID
     title: String
     overview: String
@@ -24,19 +24,26 @@ const typeDefs = gql `
     popularity: Float!
     tags: [String!]!
   }
+  input InputTv {
+    title: String!
+    overview: String!
+    poster_path: String!
+    popularity: Float!
+    tags: [String!]!
+  }
   type Query {
-    movies: [Movie]
-    movie(_id: ID): Movie
-    tvs: [Tv]
-    tv(_id: ID): Tv
+    findAllMovies: [Movie]
+    findMovieById(_id: ID): Movie
+    findAllTvSeries: [TvSeries]
+    findTvSeriesById(_id: ID): TvSeries
   }
   type Mutation {
     addMovie(movie: InputMovie): Movie
-    updateMovie(_id: ID, movie: InputMovie): Movie
+    editMovie(_id: ID, movie: InputMovie): Movie
     deleteMovie(_id: ID): Movie
-    addTv(tv: InputTv): Tv
-    updateTv(_id: ID ,tv: InputTv): Tv
-    deleteTv(_id: ID): Tv
+    addTvSeries(tvSeries: InputTv): TvSeries
+    editTvSeries(_id: ID ,tvSeries: InputTv): TvSeries
+    deleteTvSeries(_id: ID): TvSeries
   }
 `;
 
