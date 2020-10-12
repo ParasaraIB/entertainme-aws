@@ -24,7 +24,7 @@ const typeDefs = gql `
     popularity: Float!
     tags: [String!]!
   }
-  input InputTv {
+  input InputTvSeries {
     title: String!
     overview: String!
     poster_path: String!
@@ -41,8 +41,8 @@ const typeDefs = gql `
     addMovie(movie: InputMovie): Movie
     editMovie(_id: ID, movie: InputMovie): Movie
     deleteMovie(_id: ID): Movie
-    addTvSeries(tvSeries: InputTv): TvSeries
-    editTvSeries(_id: ID ,tvSeries: InputTv): TvSeries
+    addTvSeries(tvSeries: InputTvSeries): TvSeries
+    editTvSeries(_id: ID ,tvSeries: InputTvSeries): TvSeries
     deleteTvSeries(_id: ID): TvSeries
   }
 `;
