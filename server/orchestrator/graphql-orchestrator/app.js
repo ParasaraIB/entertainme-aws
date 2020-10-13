@@ -9,6 +9,8 @@ const server = new ApolloServer({
   resolvers
 });
 
-server.listen().then(({ url }) => {
+const PORT = process.env.PORT || 4000;
+
+server.listen(PORT).then(({ url }) => {
   console.log(`Graphql server is listening at ${url}`);
 });
