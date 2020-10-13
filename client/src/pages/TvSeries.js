@@ -173,6 +173,7 @@ const TvSeries = () => {
       <Dialog 
         isOpenDialog={isOpenDialog}
         onCloseDialog={(e) => setIsOpenDialog(false)}
+        showButtons={false}
       >
         Please fill all the field correctly!
       </Dialog>

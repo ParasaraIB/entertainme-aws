@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useMutation, useQuery } from "@apollo/client";
 
-const Dialog = ({ children, isOpenDialog, onCloseDialog }) => {
+import { FIND_ALL_MOVIES, DELETE_MOVIE } from "../graphql/movies.js";
+import { FIND_ALL_TVSERIES, DELETE_TVSERIES } from "../graphql/tvSeries.js"
+import { favorites } from "../config/client.js";
+import { GET_FAVORITES } from "../graphql";
+
+const Dialog = (props) => {
+
+  const history = useHistory();
+  const [ , setCloseDialog ] = useState(false);
+
+  const { data } = useQuery(GET_FAVORITES, {
+    refetchQueries: [{ query: GET_FAVORITES }]
+  });
+
+  const [ deleteMovie ] = useMutation(DELETE_MOVIE, {
+    refetchQueries: [{ query: FIND_ALL_MOVIES}]
+  });
+
+  const [ deleteTvSeries ] = useMutation(DELETE_TVSERIES, {
+    refetchQueries: [{ query: FIND_ALL_TVSERIES}]
+  });
 
   const dialogStyles = {
     width: "500px",
@@ -32,16 +55,55 @@ const Dialog = ({ children, isOpenDialog, onCloseDialog }) => {
     color: "#f7f7f7"
   };
 
+  const handleClose = (e) => {
+    setCloseDialog(props.onCloseDialog);
+  };
+
+  const handleYes = (e) => {
+    if (props.typename === "Movie") {
+      const id = props.deleteData.findMovieById._id;
+      deleteMovie({
+        variables: { _id: id }
+      });
+      toast.success("A movie has been deleted");
+      history.goBack();
+    } else if (props.typename === "TvSeries") {
+      const id = props.deleteData.findTvSeriesById._id;
+      deleteTvSeries({
+        variables: { _id: id }
+      });
+      toast.success("A tv series has been deleted");
+      history.goBack();
+    } else {
+      const newFavorites = data.favorites.filter((favorite) => {
+      return favorite._id !== props.deleteId;
+      });
+      favorites(newFavorites);
+      toast.success("An item has been removed");
+      handleClose();
+    };
+  };
+
   let dialog = (
     <div style={dialogStyles}>
-      <button style={dialogCloseButtonStyles} onClick={onCloseDialog}>x</button>
+      <button style={dialogCloseButtonStyles} onClick={handleClose}>x</button>
       <div className="text-light">
-        {children}
+        {props.children}
       </div>
+      {
+        props.showButtons ? (
+          <div className="container">
+            <button className="btn btn-primary m-2" onClick={handleYes}>Yes</button>
+            <button className="btn btn-danger" onClick={handleClose}>Cancel</button>
+          </div>
+        ) : (
+          null
+        )
+      }
     </div>
   );
 
-  if (!isOpenDialog) {
+  if (!props.isOpenDialog) {
     dialog = null;
   };
 

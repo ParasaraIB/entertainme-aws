@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 
-import { FIND_TVSERIES_BY_ID, FIND_ALL_TVSERIES, EDIT_TVSERIES, DELETE_TVSERIES } from "../graphql/tvSeries.js";
+import { FIND_TVSERIES_BY_ID, EDIT_TVSERIES } from "../graphql/tvSeries.js";
 import Loading from "../components/Loading.js";
 import { favorites } from "../config/client.js";
 import { GET_FAVORITES } from "../graphql";
@@ -14,6 +14,7 @@ const TvSeriesDetails = () => {
   const { id } = useParams();
   const history = useHistory();
   const [ isOpenDialog, setIsOpenDialog ] = useState(false);
+  const [ isOpenDialogDelete, setIsOpenDialogDelete ] = useState(false);
 
   const { loading, error, data } = useQuery(FIND_TVSERIES_BY_ID, {
     variables: { _id: id }
@@ -25,9 +26,6 @@ const TvSeriesDetails = () => {
 
   const [ editTvSeries ] = useMutation(EDIT_TVSERIES, {
     refetchQueries: [{ query: FIND_TVSERIES_BY_ID, variables: { _id: id }}]
-  });
-  const [ deleteTvSeries ] = useMutation(DELETE_TVSERIES, {
-    refetchQueries: [{ query: FIND_ALL_TVSERIES}]
   });
 
   const editedTvSeries = {};
@@ -54,11 +52,7 @@ const TvSeriesDetails = () => {
   };
 
   const handleDelete = (e) => {
-    deleteTvSeries({
-      variables: { _id: id }
-    });
-    toast.success("A tv series has been deleted");
-    history.goBack();
+    setIsOpenDialogDelete(true);
   };
 
   const [ show, setShow ] = useState(false);
@@ -238,8 +232,18 @@ const TvSeriesDetails = () => {
         </Modal.Body>
       </Modal>
       <Dialog 
+        isOpenDialog={isOpenDialogDelete}
+        onCloseDialog={(e) => setIsOpenDialogDelete(false)}
+        showButtons={true}
+        deleteData={data}
+        typename={data.findTvSeriesById.__typename}
+      >
+        Proceed to delete?
+      </Dialog>
+      <Dialog 
         isOpenDialog={isOpenDialog}
         onCloseDialog={(e) => setIsOpenDialog(false)}
+        showButtons={false}
       >
         Please fill all the field correctly!
       </Dialog>

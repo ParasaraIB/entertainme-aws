@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 
-import { FIND_MOVIE_BY_ID, FIND_ALL_MOVIES, EDIT_MOVIE, DELETE_MOVIE } from "../graphql/movies.js";
+import { FIND_MOVIE_BY_ID, EDIT_MOVIE } from "../graphql/movies.js";
 import Loading from "../components/Loading.js";
 import { favorites } from "../config/client.js";
 import { GET_FAVORITES } from "../graphql";
@@ -14,6 +14,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const history = useHistory();
   const [ isOpenDialog, setIsOpenDialog ] = useState(false);
+  const [ isOpenDialogDelete, setIsOpenDialogDelete ] = useState(false);
 
   const { loading, error, data } = useQuery(FIND_MOVIE_BY_ID, {
     variables: { _id: id }
@@ -25,9 +26,6 @@ const MovieDetails = () => {
 
   const [ editMovie ] = useMutation(EDIT_MOVIE, {
     refetchQueries: [{ query: FIND_MOVIE_BY_ID, variables: { _id: id }}]
-  });
-  const [ deleteMovie ] = useMutation(DELETE_MOVIE, {
-    refetchQueries: [{ query: FIND_ALL_MOVIES}]
   });
 
   const editedMovie = {};
@@ -54,11 +52,7 @@ const MovieDetails = () => {
   };
 
   const handleDelete = (e) => {
-    deleteMovie({
-      variables: { _id: id }
-    });
-    toast.success("A movie has been deleted");
-    history.goBack();
+    setIsOpenDialogDelete(true);
   };
 
   const [ show, setShow ] = useState(false);
@@ -100,6 +94,10 @@ const MovieDetails = () => {
     favorites([...favorites(), data.findMovieById]);
     toast.success("Added to Favorites");
   };
+
+  const handleOnCloseDialog = (e) => {
+    setIsOpenDialogDelete(false);
+  }
 
   if (loading) {
     return <Loading />;
@@ -238,8 +236,18 @@ const MovieDetails = () => {
         </Modal.Body>
       </Modal>
       <Dialog 
+        isOpenDialog={isOpenDialogDelete}
+        onCloseDialog={handleOnCloseDialog}
+        showButtons={true}
+        deleteData={data}
+        typename={data.findMovieById.__typename}
+      >
+        Proceed to delete?
+      </Dialog>
+      <Dialog 
         isOpenDialog={isOpenDialog}
         onCloseDialog={(e) => setIsOpenDialog(false)}
+        showButtons={false}
       >
         Please fill all the field correctly!
       </Dialog>
