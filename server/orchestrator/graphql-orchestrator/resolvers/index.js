@@ -1,8 +1,19 @@
 const axios = require("axios");
 const Redis = require("ioredis");
-const { deleteMovie } = require("../../express-orchestrator/controllers/MovieController");
 
-const redis = new Redis();
+let redis;
+if (process.env.REDISLABS_HOST && process.env.REDISLABS_PASSWORD) {
+  redis = new Redis({
+    port: 18441,
+    host: process.env.REDISLABS_HOST,
+    password: process.env.REDISLABS_PASSWORD
+  });
+} else {
+  redis = new Redis({
+    port: 6379,
+    host: "127.0.0.1"
+  });
+};
 
 const movieUrl = "http://localhost:3001/movies";
 const tvSeriesUrl = "http://localhost:3002/tv";

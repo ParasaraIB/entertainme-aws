@@ -1,8 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
 const tvSeriesRouter = require("./routes");
-const errHandler = require("../movie/middlewares/errHandler");
+const errHandler = require("./middlewares/errHandler.js");
 
 const app = express();
 const PORT = process.env.PORT || 3002;

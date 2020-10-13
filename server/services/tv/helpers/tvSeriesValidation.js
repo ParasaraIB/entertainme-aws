@@ -1,3 +1,5 @@
+// UNUSED CODE --> VALIDATION CAN ONLY BE USED IN LOCAL USAGE WITH ../config/mongo.js
+
 const tvSeriesValidation = (db) => {
   db.listCollections().toArray((err, collections) => {
     const check = collections.find((collection) => collection.name === "TvSeries");

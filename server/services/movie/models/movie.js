@@ -1,8 +1,14 @@
 const { ObjectId } = require("mongodb");
+const MongoClient = require('mongodb').MongoClient;
 
-const db = require("../config/mongo.js");
+const uri = process.env.DB_URL || "mongodb://localhost:27017";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const Movie = db.collection("Movies");
+let Movie;
+
+client.connect(err => {
+  Movie = client.db(process.env.DB_NAME || "entertainme").collection("Movies");
+});
 
 class MovieModel {
   static findAll() {
