@@ -1,0 +1,59 @@
+version: "3.8"
+services:
+  nginx:
+    image: "nginx:latest"
+    links: 
+      - orchestrator
+      - movie
+      - tv
+      - client
+    volumes:
+      - ./client:/var/www/html
+      - ./nginx/site.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8001:80"
+  orchestrator:
+    build:
+      context: ./server/orchestrator/graphql-orchestrator
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - "./server/orchestrator/graphql-orchestrator:/usr/local/orchestrator"
+      - "/usr/local/orchestrator/node_modules"
+  movie:
+    build:
+      context: ./server/services/movie
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - "./server/services/movie:/usr/local/movie"
+      - "/usr/local/movie/node_modules"
+  tv:
+    build: 
+      context: ./server/services/tv
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - "./server/services/tv:/usr/local/tv"
+      - "/usr/local/tv/node_modules"
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - "./client:/var/www/html"
+      - "/var/www/html/node_modules"
+  client_dev:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - "./client:/var/www/html"
+      - "/var/www/html/node_modules"
+    ports:
+      - "3000:3000"
+    command: ["npm", "run", "start"]
