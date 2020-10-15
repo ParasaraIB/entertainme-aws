@@ -15,8 +15,8 @@ if (process.env.REDISLABS_HOST && process.env.REDISLABS_PASSWORD) {
   });
 };
 
-const movieUrl = "http://localhost:3001/movies";
-const tvSeriesUrl = "http://localhost:3002/tv";
+const movieUrl = "http://movie:3001/movies";
+const tvSeriesUrl = "http://tv:3002/tv";
 
 const resolvers = {
 
